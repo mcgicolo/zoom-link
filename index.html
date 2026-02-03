@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCGI Zoom Meeting - Join Our Service</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #4F46E5;
+            --primary-hover: #4338CA;
+            --text-dark: #1F2937;
+            --text-light: #6B7280;
+            --border-color: #E5E7EB;
+            --background: #FFFFFF;
+            --error-color: #EF4444;
+            --success-color: #10B981;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 100vh;
+            height: -webkit-fill-available;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 12px;
+            color: var(--text-dark);
+            overflow: hidden;
+        }
+
+        .container {
+            background: var(--background);
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+            max-width: 600px;
+            width: 100%;
+            height: 100%;
+            max-height: calc(100vh - 24px);
+            max-height: calc(100dvh - 24px);
+            padding: 20px 16px 16px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .progress-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: var(--primary-color);
+            transition: width 0.4s ease;
+            width: 0%;
+        }
+
+        .step {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .step.active {
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .step-indicator {
+            color: var(--text-light);
+            font-size: 11px;
+            font-weight: 500;
+            margin-bottom: 6px;
+            letter-spacing: 0.5px;
+        }
+
+        h1 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: var(--text-dark);
+            line-height: 1.2;
+        }
+
+        .subtitle {
+            color: var(--text-light);
+            font-size: 13px;
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .step-content {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding-bottom: 12px;
+            -webkit-overflow-scrolling: touch;
+            min-height: 0;
+        }
+
+        .step-actions {
+            flex: 0 0 auto;
+            padding-top: 12px;
+            background: var(--background);
+            border-top: 1px solid #f3f4f6;
+        }
+
+        label {
+            display: block;
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--text-dark);
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px 16px;
+            font-size: 16px;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            background: var(--background);
+            color: var(--text-dark);
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        select {
+            width: 100%;
+            padding: 12px 16px;
+            font-size: 16px;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            background: var(--background);
+            color: var(--text-dark);
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 18px;
+            padding-right: 40px;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        select option {
+            padding: 10px;
+        }
+
+        .btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 0;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            min-height: 44px;
+            line-height: 1.2;
+            box-sizing: border-box;
+        }
+
+        .btn:hover:not(:disabled) {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(79, 70, 229, 0.3);
+        }
+
+        .btn:disabled {
+            background: var(--border-color);
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            background: rgba(79, 70, 229, 0.05);
+            transform: translateY(-1px);
+            box-shadow: none;
+        }
+
+        .guidelines {
+            background: #F9FAFB;
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 0;
+        }
+
+        .guidelines h2 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--text-dark);
+        }
+
+        .guidelines ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .guidelines li {
+            padding: 8px 0;
+            padding-left: 24px;
+            position: relative;
+            color: var(--text-dark);
+            line-height: 1.4;
+            font-size: 13px;
+        }
+
+        .guidelines li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--success-color);
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            margin-top: 0;
+            padding: 14px;
+            background: white;
+            border-radius: 10px;
+            border: 2px solid var(--border-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .checkbox-group:hover {
+            border-color: var(--primary-color);
+            background: rgba(79, 70, 229, 0.02);
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+            cursor: pointer;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .checkbox-group label {
+            margin: 0;
+            cursor: pointer;
+            font-weight: 500;
+            color: var(--text-dark);
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        .result-container {
+            background: #F9FAFB;
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .result-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-light);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .zoom-link {
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+            word-break: break-all;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            color: var(--primary-color);
+            border: 2px solid var(--border-color);
+            margin-bottom: 12px;
+            max-height: 80px;
+            overflow-y: auto;
+        }
+
+        .button-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            align-items: stretch;
+        }
+        .button-group .btn {
+            margin: 0;
+        }
+
+        .copy-notification {
+            position: fixed;
+            top: 16px;
+            right: 16px;
+            background: var(--success-color);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 10px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.3s ease;
+            pointer-events: none;
+            font-weight: 600;
+            font-size: 14px;
+            z-index: 1000;
+        }
+
+        .copy-notification.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .name-preview {
+            background: #EEF2FF;
+            border-left: 3px solid var(--primary-color);
+            padding: 12px;
+            border-radius: 6px;
+            margin-top: 12px;
+            font-size: 12px;
+            color: var(--text-dark);
+        }
+
+        .name-preview strong {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .gender-selection {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 0;
+        }
+
+        .gender-option {
+            padding: 16px 12px;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            background: white;
+            font-size: 15px;
+        }
+
+        .gender-option:hover {
+            border-color: var(--primary-color);
+            background: rgba(79, 70, 229, 0.02);
+        }
+
+        .gender-option.selected {
+            border-color: var(--primary-color);
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+        }
+
+        .error-message {
+            color: var(--error-color);
+            font-size: 12px;
+            margin-top: 6px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        /* In-app simple notice */
+        .in-app-simple {
+            text-align: center;
+        }
+        .in-app-header {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 32px;
+            line-height: 1.3;
+        }
+        .in-app-step {
+            font-size: 15px;
+            color: var(--text-dark);
+            margin-bottom: 12px;
+            text-align: left;
+        }
+        .in-app-hint {
+            font-size: 13px;
+            color: var(--text-light);
+            margin: -4px 0 16px 0;
+            text-align: left;
+            line-height: 1.4;
+        }
+        .in-app-copy-btn {
+            margin-bottom: 28px;
+            max-width: 200px;
+        }
+        .in-app-browsers {
+            display: flex;
+            gap: 24px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .in-app-browser-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+        .browser-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            display: inline-block;
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        .chrome-icon {
+            background-image: url("icons/chrome.svg");
+        }
+        .safari-icon {
+            background-image: url("icons/safari.svg");
+        }
+
+        /* Tablet and larger */
+        @media (min-width: 641px) {
+            body {
+                padding: 20px;
+            }
+
+            .container {
+                padding: 40px 32px;
+                height: auto;
+                max-height: 90vh;
+            }
+
+            h1 {
+                font-size: 28px;
+                margin-bottom: 8px;
+            }
+
+            .subtitle {
+                font-size: 15px;
+                margin-bottom: 32px;
+            }
+
+            .step-indicator {
+                font-size: 12px;
+                margin-bottom: 10px;
+            }
+
+            input[type="text"], select {
+                padding: 14px 18px;
+                font-size: 17px;
+            }
+
+            .btn {
+                padding: 14px 28px;
+                font-size: 16px;
+            }
+
+            .guidelines {
+                padding: 20px;
+            }
+
+            .guidelines h2 {
+                font-size: 18px;
+                margin-bottom: 12px;
+            }
+
+            .guidelines li {
+                font-size: 14px;
+                padding: 10px 0;
+                padding-left: 28px;
+            }
+
+            .checkbox-group {
+                padding: 16px;
+            }
+
+            .checkbox-group label {
+                font-size: 14px;
+            }
+
+            .gender-option {
+                padding: 18px;
+                font-size: 16px;
+            }
+
+            .zoom-link {
+                font-size: 12px;
+                padding: 14px;
+            }
+
+            .name-preview {
+                font-size: 13px;
+                padding: 14px;
+                margin-top: 16px;
+            }
+
+            .form-group {
+                margin-bottom: 20px;
+            }
+
+            .step-actions {
+                padding-top: 20px;
+            }
+
+            .step-content {
+                padding-bottom: 20px;
+            }
+
+            .guidelines {
+                margin-bottom: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="progress-bar" id="progressBar"></div>
+
+        <!-- In-App Browser Warning Screen -->
+        <div class="step" id="inAppWarningStep" style="display: none;">
+            <div class="step-content in-app-simple">
+                <h1 class="in-app-header">Please open this page in your phone browser</h1>
+                
+                <p class="in-app-step">Step 1: Tap the button below to copy this page’s link.</p>
+                <button class="btn in-app-copy-btn" onclick="copyPageUrl()">Copy link</button>
+                
+                <p class="in-app-step">Step 2: Open Chrome or Safari, then paste the copied link into the address bar (where you type website addresses).</p>
+                <p class="in-app-hint">Long-press in the address bar and tap “Paste”, or tap the bar once and paste.</p>
+                <div class="in-app-browsers">
+                    <div class="in-app-browser-item">
+                        <span class="browser-icon chrome-icon" aria-hidden="true"></span>
+                        <span>Chrome</span>
+                    </div>
+                    <div class="in-app-browser-item">
+                        <span class="browser-icon safari-icon" aria-hidden="true"></span>
+                        <span>Safari</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 1: Gender Selection -->
+        <div class="step active" id="step1">
+            <div class="step-content">
+                <div class="step-indicator">STEP 1 OF 4</div>
+                <h1>Let's get started</h1>
+                <p class="subtitle">Please select your title</p>
+                
+                <div class="gender-selection">
+                    <div class="gender-option" onclick="selectGender('Brother')">
+                        <div>Brother</div>
+                    </div>
+                    <div class="gender-option" onclick="selectGender('Sister')">
+                        <div>Sister</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step-actions">
+                <button class="btn" onclick="nextStep()" id="step1Btn" disabled>Continue</button>
+            </div>
+        </div>
+
+        <!-- Step 2: First Name -->
+        <div class="step" id="step2">
+            <div class="step-content">
+                <div class="step-indicator">STEP 2 OF 4</div>
+                <h1>What's your first name?</h1>
+                <p class="subtitle">This will be displayed in the Zoom meeting</p>
+                
+                <div class="form-group">
+                    <input type="text" id="firstName" placeholder="Enter your first name" autofocus>
+                    <div class="error-message" id="firstNameError">Please enter your first name</div>
+                </div>
+            </div>
+            
+            <div class="step-actions">
+                <button class="btn" onclick="nextStep()" id="step2Btn" disabled>Continue</button>
+            </div>
+        </div>
+
+        <!-- Step 3: Last Name -->
+        <div class="step" id="step3">
+            <div class="step-content">
+                <div class="step-indicator">STEP 3 OF 4</div>
+                <h1>And your last name?</h1>
+                <p class="subtitle">We're almost there!</p>
+                
+                <div class="form-group">
+                    <input type="text" id="lastName" placeholder="Enter your last name" autofocus>
+                    <div class="error-message" id="lastNameError">Please enter your last name</div>
+                </div>
+            </div>
+            
+            <div class="step-actions">
+                <button class="btn" onclick="nextStep()" id="step3Btn" disabled>Continue</button>
+            </div>
+        </div>
+
+        <!-- Step 4: Locale Name -->
+        <div class="step" id="step4">
+            <div class="step-content">
+                <div class="step-indicator">STEP 4 OF 4</div>
+                <h1>Which locale are you from?</h1>
+                <p class="subtitle">Select your locale from the list</p>
+                
+                <div class="form-group">
+                    <select id="localeName" autofocus>
+                        <option value="">Select your locale...</option>
+                        <option value="Abucay">Abucay</option>
+                        <option value="Alion">Alion</option>
+                        <option value="Ariada">Ariada</option>
+                        <option value="Bagac">Bagac</option>
+                        <option value="Balanga">Balanga</option>
+                        <option value="Baseco">Baseco</option>
+                        <option value="Batangas Dos">Batangas Dos</option>
+                        <option value="Bliss">Bliss</option>
+                        <option value="Colo">Colo</option>
+                        <option value="Culis">Culis</option>
+                        <option value="Diwa">Diwa</option>
+                        <option value="Dona Orani">Dona Orani</option>
+                        <option value="General Lim">General Lim</option>
+                        <option value="Gugo">Gugo</option>
+                        <option value="Hermosa">Hermosa</option>
+                        <option value="Lamao">Lamao</option>
+                        <option value="Limay">Limay</option>
+                        <option value="Mariveles">Mariveles</option>
+                        <option value="Morong Bayan">Morong Bayan</option>
+                        <option value="Morong Resort">Morong Resort</option>
+                        <option value="Mt. View">Mt. View</option>
+                        <option value="Old San Jose">Old San Jose</option>
+                        <option value="Orani">Orani</option>
+                        <option value="Orion">Orion</option>
+                        <option value="Pilar">Pilar</option>
+                        <option value="Roosevelt">Roosevelt</option>
+                        <option value="Samal">Samal</option>
+                        <option value="Tanato">Tanato</option>
+                        <option value="Tucop">Tucop</option>
+                    </select>
+                    <div class="error-message" id="localeNameError">Please select your locale</div>
+                </div>
+
+                <div class="name-preview" id="namePreview" style="display: none;">
+                    Your display name will be: <strong id="previewText"></strong>
+                </div>
+            </div>
+            
+            <div class="step-actions">
+                <button class="btn" onclick="nextStep()" id="step4Btn" disabled>Continue</button>
+            </div>
+        </div>
+
+        <!-- Step 5: Guidelines -->
+        <div class="step" id="step5">
+            <div class="step-content">
+                <div class="step-indicator">REVIEW GUIDELINES</div>
+                <h1>Before You Join</h1>
+                <p class="subtitle">A few friendly reminders to help everyone have a great experience</p>
+                
+                <div class="guidelines">
+                    <h2>Service Guidelines</h2>
+                    <ul>
+                        <li>Keep your link personal - this is your unique link, so please don't share it with others</li>
+                        <li>Keep your camera on - we'd love to see your face throughout the entire service</li>
+                        <li>Dress respectfully - wear appropriate attire as you would for an in-person service</li>
+                        <li>Make sure you're well-lit - good lighting helps everyone see you clearly</li>
+                        <li>Your display name will be automatically formatted (we've set it up for you!)</li>
+                        <li>If needed, we may move you to a breakout room to maintain service quality</li>
+                        <li>Your privacy matters - we don't save any of your information. This form only helps format your Zoom display name properly</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="step-actions">
+                <div class="checkbox-group" onclick="handleAgreementClick(event)">
+                    <input type="checkbox" id="agreementCheckbox" onchange="updateAgreementButton()">
+                    <label for="agreementCheckbox">I understand and agree to follow these guidelines</label>
+                </div>
+                
+                <button class="btn" onclick="generateLink()" id="step5Btn" disabled>Generate My Zoom Link</button>
+            </div>
+        </div>
+
+        <!-- Step 6: Result -->
+        <div class="step" id="step6">
+            <div class="step-content">
+                <div class="step-indicator">ALL SET!</div>
+                <h1>Your Zoom Link is Ready!</h1>
+                <p class="subtitle">Click the button below to join the meeting</p>
+                
+                <div class="result-container">
+                    <div class="result-label">Your Personal Zoom Link</div>
+                    <div class="zoom-link" id="zoomLink"></div>
+                    
+                    <div class="button-group">
+                        <a class="btn" id="joinMeetingBtn" href="#" target="_blank" rel="noopener noreferrer">Join Meeting</a>
+                        <button class="btn btn-secondary" onclick="copyLink()">Copy Link</button>
+                    </div>
+                </div>
+
+                <div class="name-preview">
+                    <strong>Your display name:</strong><br>
+                    <span id="finalNameDisplay"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="copy-notification" id="copyNotification">Link copied to clipboard!</div>
+
+    <script>
+        // Configuration - UPDATE THESE VALUES
+        const ZOOM_CONFIG = {
+            meetingId: '3337772323',
+            password: '9ENh1toHPf5ObLD1X85vdjZZdST8oa.1'  // Replace with actual password
+        };
+
+        let currentStep = 1;
+        const totalSteps = 5;
+        let formData = {
+            gender: '',
+            firstName: '',
+            lastName: '',
+            localeName: ''
+        };
+
+        // LocalStorage functions
+        function saveToLocalStorage() {
+            localStorage.setItem('mcgiZoomFormData', JSON.stringify(formData));
+        }
+
+        function loadFromLocalStorage() {
+            const saved = localStorage.getItem('mcgiZoomFormData');
+            if (saved) {
+                try {
+                    const data = JSON.parse(saved);
+                    formData = { ...formData, ...data };
+                    populateFields();
+                } catch (e) {
+                    console.error('Error loading saved data:', e);
+                }
+            }
+        }
+
+        function populateFields() {
+            // Populate gender
+            if (formData.gender) {
+                const genderOption = formData.gender === 'Sister' 
+                    ? document.querySelector('.gender-option:nth-child(2)') 
+                    : document.querySelector('.gender-option:nth-child(1)');
+                if (genderOption) {
+                    genderOption.classList.add('selected');
+                    document.getElementById('step1Btn').disabled = false;
+                }
+            }
+
+            // Populate first name
+            if (formData.firstName) {
+                document.getElementById('firstName').value = formData.firstName;
+                document.getElementById('step2Btn').disabled = false;
+            }
+
+            // Populate last name
+            if (formData.lastName) {
+                document.getElementById('lastName').value = formData.lastName;
+                document.getElementById('step3Btn').disabled = false;
+            }
+
+            // Populate locale
+            if (formData.localeName) {
+                document.getElementById('localeName').value = formData.localeName;
+                document.getElementById('step4Btn').disabled = false;
+                updateNamePreview();
+            }
+        }
+
+        // Initialize
+        loadFromLocalStorage();
+        updateProgress();
+        checkInAppBrowser();
+
+        // Gender selection
+        function selectGender(gender) {
+            formData.gender = gender;
+            document.querySelectorAll('.gender-option').forEach(el => el.classList.remove('selected'));
+            event.target.closest('.gender-option').classList.add('selected');
+            document.getElementById('step1Btn').disabled = false;
+            saveToLocalStorage();
+        }
+
+        // Input handlers
+        document.getElementById('firstName').addEventListener('input', function(e) {
+            formData.firstName = e.target.value.trim();
+            document.getElementById('step2Btn').disabled = formData.firstName === '';
+            document.getElementById('firstNameError').classList.remove('show');
+            saveToLocalStorage();
+        });
+
+        document.getElementById('lastName').addEventListener('input', function(e) {
+            formData.lastName = e.target.value.trim();
+            document.getElementById('step3Btn').disabled = formData.lastName === '';
+            document.getElementById('lastNameError').classList.remove('show');
+            saveToLocalStorage();
+        });
+
+        document.getElementById('localeName').addEventListener('change', function(e) {
+            formData.localeName = e.target.value;
+            document.getElementById('step4Btn').disabled = formData.localeName === '';
+            document.getElementById('localeNameError').classList.remove('show');
+            updateNamePreview();
+            saveToLocalStorage();
+        });
+
+        // Enter key handlers
+        document.getElementById('firstName').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && !document.getElementById('step2Btn').disabled) {
+                nextStep();
+            }
+        });
+
+        document.getElementById('lastName').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && !document.getElementById('step3Btn').disabled) {
+                nextStep();
+            }
+        });
+
+        function updateNamePreview() {
+            if (formData.localeName) {
+                const title = formData.gender === 'Sister' ? 'Sis.' : 'Bro.';
+                const fullName = `${formData.localeName} ${title} ${formData.firstName} ${formData.lastName}`;
+                document.getElementById('previewText').textContent = fullName;
+                document.getElementById('namePreview').style.display = 'block';
+            } else {
+                document.getElementById('namePreview').style.display = 'none';
+            }
+        }
+
+        function updateAgreementButton() {
+            const checkbox = document.getElementById('agreementCheckbox');
+            document.getElementById('step5Btn').disabled = !checkbox.checked;
+        }
+
+        function handleAgreementClick(event) {
+            if (event.target.closest('input') || event.target.closest('label')) return;
+            toggleAgreement();
+        }
+
+        function toggleAgreement() {
+            const checkbox = document.getElementById('agreementCheckbox');
+            checkbox.checked = !checkbox.checked;
+            document.getElementById('step5Btn').disabled = !checkbox.checked;
+        }
+
+        function nextStep() {
+            // Validation
+            if (currentStep === 2 && !formData.firstName) {
+                document.getElementById('firstNameError').classList.add('show');
+                return;
+            }
+            if (currentStep === 3 && !formData.lastName) {
+                document.getElementById('lastNameError').classList.add('show');
+                return;
+            }
+            if (currentStep === 4 && !formData.localeName) {
+                document.getElementById('localeNameError').classList.add('show');
+                return;
+            }
+
+            document.getElementById(`step${currentStep}`).classList.remove('active');
+            currentStep++;
+            document.getElementById(`step${currentStep}`).classList.add('active');
+            updateProgress();
+
+            // Auto-focus on next input or select
+            setTimeout(() => {
+                const nextInput = document.querySelector(`#step${currentStep} input[type="text"]`);
+                const nextSelect = document.querySelector(`#step${currentStep} select`);
+                if (nextInput) nextInput.focus();
+                if (nextSelect) nextSelect.focus();
+            }, 100);
+        }
+
+        function updateProgress() {
+            const progress = (currentStep / totalSteps) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        function generateLink() {
+            const title = formData.gender === 'Sister' ? 'Sis.' : 'Bro.';
+            const displayName = `[${formData.localeName}] ${title} ${formData.firstName} ${formData.lastName}`;
+            const encodedName = encodeURIComponent(displayName);
+            
+            const zoomUrl = `https://us06web.zoom.us/j/${ZOOM_CONFIG.meetingId}?pwd=${ZOOM_CONFIG.password}&uname=${encodedName}&videooff=false&autoJoin=true&join=true `;
+            
+            document.getElementById('zoomLink').textContent = zoomUrl;
+            document.getElementById('finalNameDisplay').textContent = displayName;           
+            
+            // Set the href for the Join Meeting button
+            document.getElementById('joinMeetingBtn').href = zoomUrl;
+            
+            // Optionally show different UI for in-app browser on result screen (if elements exist)
+            const normalSubtitle = document.getElementById('normalSubtitle');
+            const inAppSubtitle = document.getElementById('inAppSubtitle');
+            const normalButtons = document.getElementById('normalButtons');
+            const inAppMessage = document.getElementById('inAppMessage');
+            if (normalSubtitle && inAppSubtitle && normalButtons && inAppMessage) {
+                const ua = navigator.userAgent || '';
+                const isInApp =
+                    /FBAN|FBAV|Messenger|Instagram|Line\//i.test(ua) ||
+                    /Twitter|Snapchat|TikTok|LinkedInApp/i.test(ua);
+                if (isInApp) {
+                    normalSubtitle.style.display = 'none';
+                    inAppSubtitle.style.display = 'block';
+                    normalButtons.style.display = 'none';
+                    inAppMessage.style.display = 'block';
+                } else {
+                    normalSubtitle.style.display = 'block';
+                    inAppSubtitle.style.display = 'none';
+                    normalButtons.style.display = 'block';
+                    inAppMessage.style.display = 'none';
+                }
+            }
+            
+            document.getElementById('step5').classList.remove('active');
+            document.getElementById('step6').classList.add('active');
+            updateProgress();
+        }
+
+        function copyLink() {
+            const zoomUrl = document.getElementById('zoomLink').textContent;
+            
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(zoomUrl).then(() => {
+                    showCopyNotification();
+                }).catch(() => {
+                    fallbackCopyToClipboard(zoomUrl);
+                });
+            } else {
+                fallbackCopyToClipboard(zoomUrl);
+            }
+        }
+
+        function fallbackCopyToClipboard(text) {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            textArea.style.position = 'fixed';
+            textArea.style.left = '-999999px';
+            document.body.appendChild(textArea);
+            textArea.select();
+            
+            try {
+                document.execCommand('copy');
+                showCopyNotification();
+            } catch (err) {
+                alert('Failed to copy link. Please copy it manually.');
+            }
+            
+            document.body.removeChild(textArea);
+        }
+
+        function showCopyNotification() {
+            const notification = document.getElementById('copyNotification');
+            notification.classList.add('show');
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Check if in-app browser and show warning
+        function checkInAppBrowser() {
+            const params = new URLSearchParams(window.location.search);
+            const forceInApp = params.get('inApp') !== null && params.get('inApp').toLowerCase() === 'true';
+            const ua = navigator.userAgent || '';
+            const isInAppBrowser =
+                /FBAN|FBAV|Messenger|Instagram|Line\//i.test(ua) ||
+                /Twitter|Snapchat|TikTok|LinkedInApp/i.test(ua);
+            const isInApp = forceInApp || isInAppBrowser;
+            
+            if (isInApp) {
+                // Hide all form steps
+                document.querySelectorAll('.step').forEach(step => {
+                    step.classList.remove('active');
+                    step.style.display = 'none';
+                });
+                
+                // Show in-app warning
+                const warningStep = document.getElementById('inAppWarningStep');
+                warningStep.style.display = 'flex';
+                warningStep.classList.add('active');
+                
+                // Hide progress bar
+                document.getElementById('progressBar').style.display = 'none';
+            }
+        }
+
+        // Copy page URL function
+        function copyPageUrl() {
+            const pageUrl = window.location.href;
+            
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(pageUrl).then(() => {
+                    showCopyNotification();
+                }).catch(() => {
+                    fallbackCopyToClipboard(pageUrl);
+                });
+            } else {
+                fallbackCopyToClipboard(pageUrl);
+            }
+        }
+    </script>
+</body>
+</html>
