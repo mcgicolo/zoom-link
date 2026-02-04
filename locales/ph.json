@@ -11,7 +11,7 @@
     "safari": "Safari"
   },
   "step1": {
-    "indicator": "Step 1 of 4",
+    "indicator": "Step 1 of 3",
     "title": "Magsimula tayo",
     "subtitle": "Mangyaring piliin ang iyong titulo",
     "brother": "Brother",
@@ -19,23 +19,15 @@
     "continue": "Magpatuloy"
   },
   "step2": {
-    "indicator": "Step 2 of 4",
-    "title": "Ano ang iyong unang pangalan?",
+    "indicator": "Step 2 of 3",
+    "title": "Ano ang iyong pangalan?",
     "subtitle": "Ito ay ipapakita sa Zoom meeting",
-    "placeholder": "Ilagay ang iyong unang pangalan",
-    "error": "Mangyaring ilagay ang iyong unang pangalan",
+    "placeholder": "Ilagay ang iyong buong pangalan (e.g., Juan Dela Cruz)",
+    "error": "Mangyaring maglagay ng hindi bababa sa 2 salita na may hindi bababa sa 3 letra bawat isa",
     "continue": "Magpatuloy"
   },
   "step3": {
-    "indicator": "Step 3 of 4",
-    "title": "At ang iyong apelyido?",
-    "subtitle": "Malapit na tayo!",
-    "placeholder": "Ilagay ang iyong apelyido",
-    "error": "Mangyaring ilagay ang iyong apelyido",
-    "continue": "Magpatuloy"
-  },
-  "step4": {
-    "indicator": "Step 4 of 4",
+    "indicator": "Step 3 of 3",
     "title": "Saang locale ka galing?",
     "subtitle": "Piliin ang iyong locale mula sa listahan",
     "placeholder": "Piliin ang iyong locale...",
@@ -43,11 +35,11 @@
     "namePreviewPrefix": "Ang iyong display name ay:",
     "continue": "Magpatuloy"
   },
-  "step5": {
+  "step4": {
     "indicator": "BASAHIN ANG MGA ALITUNTUNIN",
     "title": "Bago Ka Sumali",
     "subtitle": "Ilang paalala para mas maganda ang karanasan ng lahat",
-    "guidelinesHeading": "Mga Alituntunin sa pagdalo via Zoom Conference",
+    "guidelinesHeading": "Mga Alituntunin sa pagdalo via Zoom",
     "guideline1": "Panatilihing pribado ang iyong link - ito ay para sa iyo lamang, huwag ibahagi sa iba",
     "guideline2": "I-on ang iyong camera - gusto naming makita ang iyong mukha sa buong serbisyo",
     "guideline3": "Magsuot ng angkop - magbihis ng nararapat tulad sa personal na serbisyo",
@@ -58,7 +50,7 @@
     "agreementLabel": "Nauunawaan ko at sumasang-ayon ako sa mga alituntunin na ito",
     "generateBtn": "Likhain ang Aking Zoom Link"
   },
-  "step6": {
+  "step5": {
     "indicator": "HANDA NA!",
     "title": "Handa na ang Iyong Zoom Link!",
     "subtitle": "I-tap ang button sa ibaba para sumali sa meeting",

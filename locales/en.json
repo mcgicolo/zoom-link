@@ -11,7 +11,7 @@
     "safari": "Safari"
   },
   "step1": {
-    "indicator": "STEP 1 OF 4",
+    "indicator": "STEP 1 OF 3",
     "title": "Let's get started",
     "subtitle": "Please select your title",
     "brother": "Brother",
@@ -19,23 +19,15 @@
     "continue": "Continue"
   },
   "step2": {
-    "indicator": "STEP 2 OF 4",
-    "title": "What's your first name?",
+    "indicator": "STEP 2 OF 3",
+    "title": "What's your name?",
     "subtitle": "This will be displayed in the Zoom meeting",
-    "placeholder": "Enter your first name",
-    "error": "Please enter your first name",
+    "placeholder": "Enter your full name (e.g., Juan Dela Cruz)",
+    "error": "Please enter at least 2 words with minimum 3 characters each",
     "continue": "Continue"
   },
   "step3": {
-    "indicator": "STEP 3 OF 4",
-    "title": "And your last name?",
-    "subtitle": "We're almost there!",
-    "placeholder": "Enter your last name",
-    "error": "Please enter your last name",
-    "continue": "Continue"
-  },
-  "step4": {
-    "indicator": "STEP 4 OF 4",
+    "indicator": "STEP 3 OF 3",
     "title": "Which locale are you from?",
     "subtitle": "Select your locale from the list",
     "placeholder": "Select your locale...",
@@ -43,11 +35,11 @@
     "namePreviewPrefix": "Your display name will be:",
     "continue": "Continue"
   },
-  "step5": {
+  "step4": {
     "indicator": "REVIEW GUIDELINES",
     "title": "Before You Join",
     "subtitle": "A few friendly reminders to help everyone have a great experience",
-    "guidelinesHeading": "Guidelines for the Zoom Conference",
+    "guidelinesHeading": "Guidelines in attending Zoom conference",
     "guideline1": "Keep your link personal - this is your unique link, so please don't share it with others",
     "guideline2": "Keep your camera on - we'd love to see your face throughout the entire service",
     "guideline3": "Dress respectfully - wear appropriate attire as you would for an in-person service",
@@ -58,7 +50,7 @@
     "agreementLabel": "I understand and agree to follow these guidelines",
     "generateBtn": "Generate My Zoom Link"
   },
-  "step6": {
+  "step5": {
     "indicator": "ALL SET!",
     "title": "Your Zoom Link is Ready!",
     "subtitle": "Click the button below to join the meeting",
