@@ -1,0 +1,71 @@
+{
+  "langCode": "ph",
+  "langName": "Tagalog",
+  "inApp": {
+    "header": "Mangyaring buksan ang pahinang ito sa browser ng iyong phone",
+    "step1": "Step 1: I-tap ang button sa ibaba para kopyahin ang link ng pahinang ito.",
+    "copyBtn": "Kopyahin ang link",
+    "step2": "Step 2: Buksan ang Chrome o Safari, pagkatapos i-paste ang kinopyang link sa address bar (kung saan mo itinatype ang address ng website).",
+    "hint": "Mag-long-press sa address bar at i-tap ang \"Paste\", o i-tap ang bar nang isang beses at i-paste.",
+    "chrome": "Chrome",
+    "safari": "Safari"
+  },
+  "step1": {
+    "indicator": "Step 1 of 4",
+    "title": "Magsimula tayo",
+    "subtitle": "Mangyaring piliin ang iyong titulo",
+    "brother": "Brother",
+    "sister": "Sister",
+    "continue": "Magpatuloy"
+  },
+  "step2": {
+    "indicator": "Step 2 of 4",
+    "title": "Ano ang iyong unang pangalan?",
+    "subtitle": "Ito ay ipapakita sa Zoom meeting",
+    "placeholder": "Ilagay ang iyong unang pangalan",
+    "error": "Mangyaring ilagay ang iyong unang pangalan",
+    "continue": "Magpatuloy"
+  },
+  "step3": {
+    "indicator": "Step 3 of 4",
+    "title": "At ang iyong apelyido?",
+    "subtitle": "Malapit na tayo!",
+    "placeholder": "Ilagay ang iyong apelyido",
+    "error": "Mangyaring ilagay ang iyong apelyido",
+    "continue": "Magpatuloy"
+  },
+  "step4": {
+    "indicator": "Step 4 of 4",
+    "title": "Saang locale ka galing?",
+    "subtitle": "Piliin ang iyong locale mula sa listahan",
+    "placeholder": "Piliin ang iyong locale...",
+    "error": "Mangyaring piliin ang iyong locale",
+    "namePreviewPrefix": "Ang iyong display name ay:",
+    "continue": "Magpatuloy"
+  },
+  "step5": {
+    "indicator": "BASAHIN ANG MGA ALITUNTUNIN",
+    "title": "Bago Ka Sumali",
+    "subtitle": "Ilang paalala para mas maganda ang karanasan ng lahat",
+    "guidelinesHeading": "Mga Alituntunin sa pagdalo via Zoom Conference",
+    "guideline1": "Panatilihing pribado ang iyong link - ito ay para sa iyo lamang, huwag ibahagi sa iba",
+    "guideline2": "I-on ang iyong camera - gusto naming makita ang iyong mukha sa buong serbisyo",
+    "guideline3": "Magsuot ng angkop - magbihis ng nararapat tulad sa personal na serbisyo",
+    "guideline4": "Siguraduhing maliwanag - ang magandang ilaw ay makakatulong para makita ka ng lahat",
+    "guideline5": "Ang iyong display name ay awtomatikong ifo-format (na-set up na namin para sa iyo!)",
+    "guideline6": "Kung kailangan, maaari naming ilipat ka sa breakout room para sa kalidad ng serbisyo",
+    "guideline7": "Mahalaga ang iyong privacy - hindi namin sine-save ang iyong impormasyon. Ang form na ito ay tumutulong lang na i-format ang iyong Zoom display name",
+    "agreementLabel": "Nauunawaan ko at sumasang-ayon ako sa mga alituntunin na ito",
+    "generateBtn": "Likhain ang Aking Zoom Link"
+  },
+  "step6": {
+    "indicator": "HANDA NA!",
+    "title": "Handa na ang Iyong Zoom Link!",
+    "subtitle": "I-tap ang button sa ibaba para sumali sa meeting",
+    "resultLabel": "Ang Iyong Personal na Zoom Link",
+    "joinBtn": "Sumali sa Meeting",
+    "copyBtn": "Kopyahin ang Link",
+    "displayNameLabel": "Ang iyong display name:"
+  },
+  "copyNotification": "Nakopya ang link!"
+}

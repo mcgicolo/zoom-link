@@ -1,0 +1,71 @@
+{
+  "langCode": "en",
+  "langName": "English",
+  "inApp": {
+    "header": "Please open this page in your phone browser",
+    "step1": "Step 1: Tap the button below to copy this page's link.",
+    "copyBtn": "Copy link",
+    "step2": "Step 2: Open Chrome or Safari, then paste the copied link into the address bar (where you type website addresses).",
+    "hint": "Long-press in the address bar and tap \"Paste\", or tap the bar once and paste.",
+    "chrome": "Chrome",
+    "safari": "Safari"
+  },
+  "step1": {
+    "indicator": "STEP 1 OF 4",
+    "title": "Let's get started",
+    "subtitle": "Please select your title",
+    "brother": "Brother",
+    "sister": "Sister",
+    "continue": "Continue"
+  },
+  "step2": {
+    "indicator": "STEP 2 OF 4",
+    "title": "What's your first name?",
+    "subtitle": "This will be displayed in the Zoom meeting",
+    "placeholder": "Enter your first name",
+    "error": "Please enter your first name",
+    "continue": "Continue"
+  },
+  "step3": {
+    "indicator": "STEP 3 OF 4",
+    "title": "And your last name?",
+    "subtitle": "We're almost there!",
+    "placeholder": "Enter your last name",
+    "error": "Please enter your last name",
+    "continue": "Continue"
+  },
+  "step4": {
+    "indicator": "STEP 4 OF 4",
+    "title": "Which locale are you from?",
+    "subtitle": "Select your locale from the list",
+    "placeholder": "Select your locale...",
+    "error": "Please select your locale",
+    "namePreviewPrefix": "Your display name will be:",
+    "continue": "Continue"
+  },
+  "step5": {
+    "indicator": "REVIEW GUIDELINES",
+    "title": "Before You Join",
+    "subtitle": "A few friendly reminders to help everyone have a great experience",
+    "guidelinesHeading": "Guidelines for the Zoom Conference",
+    "guideline1": "Keep your link personal - this is your unique link, so please don't share it with others",
+    "guideline2": "Keep your camera on - we'd love to see your face throughout the entire service",
+    "guideline3": "Dress respectfully - wear appropriate attire as you would for an in-person service",
+    "guideline4": "Make sure you're well-lit - good lighting helps everyone see you clearly",
+    "guideline5": "Your display name will be automatically formatted (we've set it up for you!)",
+    "guideline6": "If needed, we may move you to a breakout room to maintain service quality",
+    "guideline7": "Your privacy matters - we don't save any of your information. This form only helps format your Zoom display name properly",
+    "agreementLabel": "I understand and agree to follow these guidelines",
+    "generateBtn": "Generate My Zoom Link"
+  },
+  "step6": {
+    "indicator": "ALL SET!",
+    "title": "Your Zoom Link is Ready!",
+    "subtitle": "Click the button below to join the meeting",
+    "resultLabel": "Your Personal Zoom Link",
+    "joinBtn": "Join Meeting",
+    "copyBtn": "Copy Link",
+    "displayNameLabel": "Your display name:"
+  },
+  "copyNotification": "Link copied to clipboard!"
+}
