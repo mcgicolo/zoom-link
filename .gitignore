@@ -7,3 +7,10 @@
 
 # Logs
 *.log
+
+# Node
+node_modules/
+dist/
+
+# Local config (use config.json.sample as template)
+config.json

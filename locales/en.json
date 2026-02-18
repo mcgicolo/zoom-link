@@ -1,6 +1,16 @@
 {
   "langCode": "en",
   "langName": "English",
+  "common": {
+    "language": "Language",
+    "copyError": "Failed to copy link. Please copy it manually.",
+    "pageTitle": "MCGI Zoom Meeting - Join Our Service"
+  },
+  "notice": {
+    "indicator": "NOTICE",
+    "title": "Before You Begin",
+    "message": "If you are joining this Zoom meeting without a password, it is likely you are not authorized to join. Please call {name} at {phone}."
+  },
   "inApp": {
     "header": "Please open this page in your phone browser",
     "step1": "Step 1: Tap the button below to copy this page's link.",

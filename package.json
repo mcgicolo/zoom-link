@@ -1,0 +1,20 @@
+{
+  "name": "mcgi-zoom-generator",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/ensure-config.js && vite",
+    "build": "node scripts/ensure-config.js && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "vue": "^3.5.18"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.1.18",
+    "@vitejs/plugin-vue": "^6.0.1",
+    "tailwindcss": "^4.1.18",
+    "vite": "^7.1.2"
+  }
+}

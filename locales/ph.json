@@ -1,6 +1,16 @@
 {
   "langCode": "ph",
   "langName": "Tagalog",
+  "common": {
+    "language": "Wika",
+    "copyError": "Hindi makopya ang link. Mangyaring kopyahin ito nang manu-mano.",
+    "pageTitle": "MCGI Zoom Meeting - Sumali sa Aming Serbisyo"
+  },
+  "notice": {
+    "indicator": "PAALALA",
+    "title": "Bago Ka Magsimula",
+    "message": "Kung sumasali ka sa Zoom meeting na ito nang walang password, malamang na hindi ka awtorisadong sumali. Mangyaring tumawag kay {name} sa {phone}."
+  },
   "inApp": {
     "header": "Mangyaring buksan ang pahinang ito sa browser ng iyong phone",
     "step1": "Step 1: I-tap ang button sa ibaba para kopyahin ang link ng pahinang ito.",
