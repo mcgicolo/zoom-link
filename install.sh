@@ -378,7 +378,7 @@ setup_git_and_push() {
     fi
 
     if git remote get-url origin >/dev/null 2>&1; then
-      git push -u origin main
+      git push -f -u origin main
     else
       gh repo create "$repo_full_name" --public --source=. --remote=origin --push
     fi
