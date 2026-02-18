@@ -139,7 +139,7 @@
 import AppButton from './components/AppButton.vue';
 import AppStep from './components/AppStep.vue';
 import InAppWarning from './components/InAppWarning.vue';
-import { guidelineKeys, localeOptions, useZoomForm } from './composables/useZoomForm';
+import { guidelineKeys, useZoomForm } from './composables/useZoomForm';
 
 const joinButtonClass = 'inline-flex min-h-11 w-full items-center justify-center rounded-[10px] bg-indigo-600 px-4 py-3 text-[15px] font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-indigo-700 hover:shadow-[0_6px_16px_rgba(79,70,229,0.3)] sm:text-base';
 
@@ -158,6 +158,7 @@ const {
   isFullNameValid,
   isInAppWarning,
   noticeMessage,
+  localeOptions,
   localeSelectInput,
   nextStep,
   onFullNameEnter,

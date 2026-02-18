@@ -12,4 +12,6 @@
 node_modules/
 
 # Local config (use config.json.sample as template)
-config.json
+/config.json
+!docs/config.json
+tmp/

@@ -4,8 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "node scripts/ensure-config.js && vite",
-    "build": "node scripts/ensure-config.js && vite build",
+    "dev": "node scripts/ensure-config.js && mkdir -p public && cp config.json public/ && vite",
+    "build": "node scripts/ensure-config.js && vite build && cp config.json docs/",
     "preview": "vite preview"
   },
   "dependencies": {

@@ -1,17 +1,12 @@
-import { computed, nextTick, onMounted, reactive, ref, watch } from 'vue';
+import { computed, inject, nextTick, onMounted, reactive, ref, watch } from 'vue';
 import enLocale from '../../locales/en.json';
 import phLocale from '../../locales/ph.json';
-import appConfig from '../../config.json';
 
-const ZOOM_CONFIG = appConfig.zoom;
-const CONTACT = appConfig.contact;
 const LOCALE_STORAGE_KEY = 'mcgiZoomLocale';
 const FORM_STORAGE_KEY = 'mcgiZoomFormData';
 const TOTAL_STEPS = 5;
 
 const LOCALE_DATA = { en: enLocale, ph: phLocale };
-
-export const localeOptions = appConfig.localeList;
 
 export const guidelineKeys = [
   'step4.guideline1',
@@ -52,6 +47,11 @@ function validateFullName(name) {
 }
 
 export function useZoomForm() {
+  const appConfig = inject('appConfig', { zoom: {}, contact: {}, localeList: [] });
+  const zoomConfig = appConfig.zoom ?? {};
+  const contact = appConfig.contact ?? {};
+  const localeOptions = appConfig.localeList ?? [];
+
   const currentStep = ref(1);
   const currentLocale = ref(localStorage.getItem(LOCALE_STORAGE_KEY) || 'ph');
   const isInAppWarning = ref(false);
@@ -70,7 +70,7 @@ export function useZoomForm() {
   const progress = computed(() => Math.min(100, (currentStep.value / TOTAL_STEPS) * 100));
   const noticeMessage = computed(() => {
     const msg = getNested(translation.value, 'notice.message') || '';
-    return msg.replace(/\{name\}/g, CONTACT?.name ?? '').replace(/\{phone\}/g, CONTACT?.phone ?? '');
+    return msg.replace(/\{name\}/g, contact?.name ?? '').replace(/\{phone\}/g, contact?.phone ?? '');
   });
   const previewName = computed(() => {
     const title = formData.gender === 'Sister' ? 'Sis.' : 'Bro.';
@@ -118,7 +118,7 @@ export function useZoomForm() {
     const title = formData.gender === 'Sister' ? 'Sis.' : 'Bro.';
     const displayName = `[${formData.localeName}] ${title} ${capitalizeName(formData.fullName)}`;
     generatedDisplayName.value = displayName;
-    generatedZoomLink.value = `https://us06web.zoom.us/j/${ZOOM_CONFIG.meetingId}?uname=${encodeURIComponent(displayName)}&videooff=false&autoJoin=true&join=true `;
+    generatedZoomLink.value = `https://us06web.zoom.us/j/${zoomConfig.meetingId}?uname=${encodeURIComponent(displayName)}&videooff=false&autoJoin=true&join=true `;
     currentStep.value = 6;
   }
 
@@ -223,6 +223,7 @@ export function useZoomForm() {
     isFullNameValid,
     noticeMessage,
     isInAppWarning,
+    localeOptions,
     localeSelectInput,
     nextStep,
     onFullNameEnter,
