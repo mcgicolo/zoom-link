@@ -25,7 +25,7 @@
     "safari": "Safari"
   },
   "step1": {
-    "indicator": "STEP 1 OF 3",
+    "indicator": "STEP 1 OF 4",
     "title": "Let's get started",
     "subtitle": "Please select your title",
     "brother": "Brother",
@@ -33,7 +33,7 @@
     "continue": "Continue"
   },
   "step2": {
-    "indicator": "STEP 2 OF 3",
+    "indicator": "STEP 2 OF 4",
     "title": "What's your name?",
     "subtitle": "This will be displayed in the Zoom meeting",
     "fieldLabel": "Full name",
@@ -43,7 +43,7 @@
     "continue": "Continue"
   },
   "step3": {
-    "indicator": "STEP 3 OF 3",
+    "indicator": "STEP 3 OF 4",
     "title": "Which locale are you from?",
     "subtitle": "Select your locale from the list",
     "search": "Search locales",
@@ -55,6 +55,17 @@
     "placeholder": "Select your locale...",
     "error": "Please select your locale",
     "namePreviewPrefix": "Your display name will be:",
+    "continue": "Continue"
+  },
+  "gathering": {
+    "indicator": "STEP 4 OF 4",
+    "title": "Which gathering are you attending?",
+    "subtitle": "This helps us put you in the right breakout room",
+    "prayerMeeting": "Prayer Meeting",
+    "worshipService": "Worship Service",
+    "thanksgiving": "Thanksgiving",
+    "sto": "STO Meeting",
+    "other": "Other Meeting",
     "continue": "Continue"
   },
   "step4": {
@@ -79,10 +90,8 @@
     "resultLabel": "Your Personal Zoom Link",
     "linkHeader": "Zoom link",
     "joinBtn": "Launch Zoom",
-    "copyBtn": "Copy Link",
     "displayNameRow": "Display name",
-    "displayNameLabel": "Your display name:",
-    "copyShort": "Copy"
+    "displayNameLabel": "Your display name:"
   },
   "copyNotification": "Link copied to clipboard!",
   "install": {

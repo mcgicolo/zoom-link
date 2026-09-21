@@ -9,6 +9,19 @@ const LOCALE_DATA = { en: enLocale, ph: phLocale };
 
 export const OTHER_LOCALE = '__other__';
 
+const DAYS = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
+
+// The gatherings to choose from, in list order. `days` limits one to those days of the week
+// (every day when left out). The code goes in front of the Zoom name, e.g.
+// "[WS] [Balanga] Bro. Juan Dela Cruz", so the host knows which breakout room to assign.
+const GATHERINGS = [
+  { code: 'PM', labelKey: 'gathering.prayerMeeting', days: ['wed', 'thu'] },
+  { code: 'WS', labelKey: 'gathering.worshipService', days: ['sat', 'sun'] },
+  { code: 'TG', labelKey: 'gathering.thanksgiving', days: ['sat', 'sun'] },
+  { code: 'STO', labelKey: 'gathering.sto' },
+  { code: 'OTHR', labelKey: 'gathering.other' }
+];
+
 export const guidelineKeys = [
   'step4.guideline1',
   'step4.guideline2',
@@ -67,11 +80,19 @@ function isInAppBrowser() {
   return forceInApp || IN_APP_BROWSER_PATTERN.test(navigator.userAgent || '');
 }
 
+// Today on this device, e.g. 'wed'. Add ?day=sat (sun to sat) to the URL to preview another day's gatherings.
+function currentDay() {
+  const forcedDay = new URLSearchParams(window.location.search).get('day')?.slice(0, 3).toLowerCase();
+  return DAYS.includes(forcedDay) ? forcedDay : DAYS[new Date().getDay()];
+}
+
 export function useZoomForm() {
   const appConfig = inject('appConfig', { zoom: {}, contact: {}, localeList: [] });
   const zoomConfig = appConfig.zoom ?? {};
   const contact = appConfig.contact ?? {};
   const localeOptions = appConfig.localeList ?? [];
+  const today = currentDay();
+  const gatheringOptions = GATHERINGS.filter((item) => !item.days || item.days.includes(today));
 
   const currentStep = ref(1);
   const direction = ref('forward');
@@ -86,6 +107,9 @@ export function useZoomForm() {
   const generatedDisplayName = ref('');
 
   const formData = reactive({ gender: '', fullName: '', localeName: '', customLocale: '' });
+  // Kept out of formData so it's never saved: it changes from one gathering to the next, and a
+  // remembered choice could send someone to the wrong breakout room.
+  const gathering = ref('');
   const translation = computed(() => LOCALE_DATA[currentLocale.value] || LOCALE_DATA.en);
   const isFullNameValid = computed(() => validateFullName(formData.fullName));
   const canGoBack = computed(() => currentStep.value > 1);
@@ -99,7 +123,8 @@ export function useZoomForm() {
   });
   const previewName = computed(() => {
     const title = formData.gender === 'Sister' ? 'Sis.' : 'Bro.';
-    return `[${effectiveLocale.value}] ${title} ${capitalizeName(formData.fullName)}`.trim();
+    const gatheringTag = gathering.value ? `[${gathering.value}] ` : '';
+    return `${gatheringTag}[${effectiveLocale.value}] ${title} ${capitalizeName(formData.fullName)}`.trim();
   });
 
   function t(path) {
@@ -121,7 +146,7 @@ export function useZoomForm() {
       return;
     }
 
-    if (currentStep.value < 5) {
+    if (currentStep.value < 6) {
       direction.value = 'forward';
       currentStep.value += 1;
     }
@@ -140,11 +165,10 @@ export function useZoomForm() {
 
   function generateLink() {
     direction.value = 'forward';
-    const title = formData.gender === 'Sister' ? 'Sis.' : 'Bro.';
-    const displayName = `[${effectiveLocale.value}] ${title} ${capitalizeName(formData.fullName)}`;
+    const displayName = previewName.value;
     generatedDisplayName.value = displayName;
     generatedZoomLink.value = `https://us06web.zoom.us/j/${zoomConfig.meetingId}?uname=${encodeURIComponent(displayName)}&videooff=false&autoJoin=true&join=true`;
-    currentStep.value = 6;
+    currentStep.value = 7;
   }
 
   function showCopyNotification() {
@@ -178,10 +202,6 @@ export function useZoomForm() {
       return;
     }
     fallbackCopyToClipboard(text);
-  }
-
-  function copyLink() {
-    copyText(generatedZoomLink.value);
   }
 
   function copyPageUrl() {
@@ -235,13 +255,14 @@ export function useZoomForm() {
     agreementChecked,
     canGoBack,
     contact,
-    copyLink,
     copyPageUrl,
     currentLocale,
     currentStep,
     direction,
     effectiveLocale,
     formData,
+    gathering,
+    gatheringOptions,
     generateLink,
     generatedDisplayName,
     generatedZoomLink,

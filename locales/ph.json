@@ -25,7 +25,7 @@
     "safari": "Safari"
   },
   "step1": {
-    "indicator": "Step 1 of 3",
+    "indicator": "Step 1 of 4",
     "title": "Magsimula tayo",
     "subtitle": "Mangyaring piliin ang iyong titulo",
     "brother": "Brother",
@@ -33,7 +33,7 @@
     "continue": "Magpatuloy"
   },
   "step2": {
-    "indicator": "Step 2 of 3",
+    "indicator": "Step 2 of 4",
     "title": "Ano ang iyong pangalan?",
     "subtitle": "Ito ay ipapakita sa Zoom meeting",
     "fieldLabel": "Buong pangalan",
@@ -43,7 +43,7 @@
     "continue": "Magpatuloy"
   },
   "step3": {
-    "indicator": "Step 3 of 3",
+    "indicator": "Step 3 of 4",
     "title": "Saang locale ka galing?",
     "subtitle": "Piliin ang iyong locale mula sa listahan",
     "search": "Maghanap ng locale",
@@ -55,6 +55,17 @@
     "placeholder": "Piliin ang iyong locale...",
     "error": "Mangyaring piliin ang iyong locale",
     "namePreviewPrefix": "Ang iyong display name ay:",
+    "continue": "Magpatuloy"
+  },
+  "gathering": {
+    "indicator": "Step 4 of 4",
+    "title": "Anong pagtitipon ang iyong dadaluhan?",
+    "subtitle": "Para mailagay ka namin sa tamang breakout room",
+    "prayerMeeting": "Prayer Meeting",
+    "worshipService": "Worship Service",
+    "thanksgiving": "Thanksgiving",
+    "sto": "STO Meeting",
+    "other": "Iba pang pagtitipon",
     "continue": "Magpatuloy"
   },
   "step4": {
@@ -79,10 +90,8 @@
     "resultLabel": "Ang Iyong Personal na Zoom Link",
     "linkHeader": "Zoom link",
     "joinBtn": "Buksan ang Zoom",
-    "copyBtn": "Kopyahin ang Link",
     "displayNameRow": "Display name",
-    "displayNameLabel": "Ang iyong display name:",
-    "copyShort": "Kopyahin"
+    "displayNameLabel": "Ang iyong display name:"
   },
   "copyNotification": "Nakopya ang link!",
   "install": {

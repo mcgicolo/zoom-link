@@ -39,6 +39,7 @@ import { Globe } from 'lucide-vue-next';
 import IosHud from './components/ios/IosHud.vue';
 import IosNavBar from './components/ios/IosNavBar.vue';
 import InstallGuide from './components/InstallGuide.vue';
+import GatheringScreen from './screens/GatheringScreen.vue';
 import GenderScreen from './screens/GenderScreen.vue';
 import GuidelinesScreen from './screens/GuidelinesScreen.vue';
 import InAppScreen from './screens/InAppScreen.vue';
@@ -60,8 +61,9 @@ const stepScreens = {
   2: GenderScreen,
   3: NameScreen,
   4: LocaleScreen,
-  5: GuidelinesScreen,
-  6: ResultScreen
+  5: GatheringScreen,
+  6: GuidelinesScreen,
+  7: ResultScreen
 };
 
 const stepTitleKeys = {
@@ -69,8 +71,9 @@ const stepTitleKeys = {
   2: 'step1.title',
   3: 'step2.title',
   4: 'step3.title',
-  5: 'step4.title',
-  6: 'step5.title'
+  5: 'gathering.title',
+  6: 'step4.title',
+  7: 'step5.title'
 };
 
 const currentScreen = computed(() => (form.isInAppWarning ? InAppScreen : stepScreens[form.currentStep]));
@@ -94,6 +97,16 @@ function handlePopState(event) {
   }
 }
 
+// The installed app can sit in the background for days and resume where it left off, still
+// showing the gatherings (or a link tagged with one) from the day it was opened. Start over on a new day.
+const openedOn = new Date().toDateString();
+
+function handleVisibilityChange() {
+  if (document.visibilityState === 'visible' && new Date().toDateString() !== openedOn) {
+    window.location.reload();
+  }
+}
+
 watch(() => form.currentStep, (value, oldValue) => {
   window.scrollTo(0, 0);
   if (value > oldValue) {
@@ -104,6 +117,7 @@ watch(() => form.currentStep, (value, oldValue) => {
 onMounted(() => {
   history.replaceState({ step: 1 }, '');
   window.addEventListener('popstate', handlePopState);
+  document.addEventListener('visibilitychange', handleVisibilityChange);
 
   // Offer the Home Screen guide shortly after the app opens, unless it's already installed,
   // snoozed, or we're inside an in-app browser (which can't add to the Home Screen).
@@ -114,6 +128,7 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   window.removeEventListener('popstate', handlePopState);
+  document.removeEventListener('visibilitychange', handleVisibilityChange);
   clearTimeout(installGuideTimer);
 });
 </script>

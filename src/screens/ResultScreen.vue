@@ -31,16 +31,6 @@
           @focus="selectLink"
           @click="selectLink"
         >
-        <template #trailing>
-          <button
-            type="button"
-            class="relative inline-flex min-h-9 items-center gap-1.5 rounded-full bg-ios-tint-soft px-3.5 text-ios-subhead font-semibold text-ios-tint transition-opacity after:absolute after:-inset-1 after:content-[''] active:opacity-70"
-            @click="form.copyLink()"
-          >
-            <Copy class="size-4" aria-hidden="true" />
-            {{ form.t('step5.copyShort') }}
-          </button>
-        </template>
       </IosRow>
     </IosSection>
 
@@ -69,7 +59,7 @@
 
 <script setup>
 import { inject } from 'vue';
-import { Check, Video, Copy } from 'lucide-vue-next';
+import { Check, Video } from 'lucide-vue-next';
 import IosScreen from '../components/ios/IosScreen.vue';
 import IosSection from '../components/ios/IosSection.vue';
 import IosRow from '../components/ios/IosRow.vue';
@@ -80,7 +70,7 @@ import { useInstallGuide } from '../composables/useInstallGuide';
 const form = inject('zoomForm');
 const installGuide = useInstallGuide();
 
-// Select the whole link on tap so it can also be copied by hand (setSelectionRange works on iOS).
+// Select the whole link on tap so it can be copied by hand (setSelectionRange works on iOS).
 function selectLink(event) {
   event.target.setSelectionRange(0, event.target.value.length);
 }

@@ -8,7 +8,8 @@ A mobile-first Vue app that generates personalized Zoom meeting links with prope
 - Step-by-step one-question-at-a-time flow
 - English and Tagalog locale support
 - LocalStorage form persistence
-- One-click copy and join functionality
+- Gathering step: tags the Zoom name with the gathering (e.g. `[WS] [Balanga] Bro. Juan Dela Cruz`) so the host knows which breakout room to assign; only that day's gatherings are listed
+- One-click join functionality
 - Installable as an app (PWA); after the first visit the app itself opens offline, but joining a meeting still needs internet
 
 ## Development
@@ -32,6 +33,7 @@ Build output goes to `docs/` and now also includes the web app manifest (`manife
 - `config.json` is gitignored. `npm run dev` and `npm run build` create it from `config.json.sample` if it's missing (`scripts/ensure-config.js`).
 - The dev server serves a copy at `public/config.json` (also gitignored); the build copies it to `docs/config.json`, which is the copy the live site uses.
 - The service worker always fetches `config.json` from the network and uses its saved copy only when offline, so changes show up the next time the app opens.
+- The gatherings, their name codes, and the days each one is offered are set in `GATHERINGS` in `src/composables/useZoomForm.js`. Days follow the phone's clock; add `?day=sat` (`sun` to `sat`) to the URL to preview another day's list.
 
 ## App icons
 
