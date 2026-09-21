@@ -1,12 +1,13 @@
-import { computed, inject, nextTick, onMounted, reactive, ref, watch } from 'vue';
+import { computed, inject, onMounted, reactive, ref, watch } from 'vue';
 import enLocale from '../../locales/en.json';
 import phLocale from '../../locales/ph.json';
 
 const LOCALE_STORAGE_KEY = 'mcgiZoomLocale';
 const FORM_STORAGE_KEY = 'mcgiZoomFormData';
-const TOTAL_STEPS = 5;
 
 const LOCALE_DATA = { en: enLocale, ph: phLocale };
+
+export const OTHER_LOCALE = '__other__';
 
 export const guidelineKeys = [
   'step4.guideline1',
@@ -46,6 +47,17 @@ function validateFullName(name) {
   return words.every((word) => word.length >= 3);
 }
 
+// Trims, collapses whitespace, and uppercases the first letter of each word
+// without lowercasing the rest, e.g. "balut, orani" -> "Balut, Orani"; "OSJ" stays "OSJ".
+function tidy(value) {
+  return value
+    .trim()
+    .replace(/\s+/g, ' ')
+    .split(' ')
+    .map((word) => (word ? word.charAt(0).toUpperCase() + word.slice(1) : word))
+    .join(' ');
+}
+
 export function useZoomForm() {
   const appConfig = inject('appConfig', { zoom: {}, contact: {}, localeList: [] });
   const zoomConfig = appConfig.zoom ?? {};
@@ -53,6 +65,7 @@ export function useZoomForm() {
   const localeOptions = appConfig.localeList ?? [];
 
   const currentStep = ref(1);
+  const direction = ref('forward');
   const currentLocale = ref(localStorage.getItem(LOCALE_STORAGE_KEY) || 'ph');
   const isInAppWarning = ref(false);
   const agreementChecked = ref(false);
@@ -61,20 +74,22 @@ export function useZoomForm() {
   const showCopyNotificationBanner = ref(false);
   const generatedZoomLink = ref('');
   const generatedDisplayName = ref('');
-  const fullNameInput = ref(null);
-  const localeSelectInput = ref(null);
 
-  const formData = reactive({ gender: '', fullName: '', localeName: '' });
+  const formData = reactive({ gender: '', fullName: '', localeName: '', customLocale: '' });
   const translation = computed(() => LOCALE_DATA[currentLocale.value] || LOCALE_DATA.en);
   const isFullNameValid = computed(() => validateFullName(formData.fullName));
-  const progress = computed(() => Math.min(100, (currentStep.value / TOTAL_STEPS) * 100));
+  const canGoBack = computed(() => currentStep.value > 1);
+  const effectiveLocale = computed(() => (
+    formData.localeName === OTHER_LOCALE ? tidy(formData.customLocale) : formData.localeName
+  ));
+  const isLocaleValid = computed(() => effectiveLocale.value.length >= 2);
   const noticeMessage = computed(() => {
     const msg = getNested(translation.value, 'notice.message') || '';
     return msg.replace(/\{name\}/g, contact?.name ?? '').replace(/\{phone\}/g, contact?.phone ?? '');
   });
   const previewName = computed(() => {
     const title = formData.gender === 'Sister' ? 'Sis.' : 'Bro.';
-    return `${formData.localeName} ${title} ${capitalizeName(formData.fullName)}`.trim();
+    return `[${effectiveLocale.value}] ${title} ${capitalizeName(formData.fullName)}`.trim();
   });
 
   function t(path) {
@@ -86,39 +101,39 @@ export function useZoomForm() {
     formData.gender = gender;
   }
 
-  async function nextStep() {
+  function nextStep() {
     if (currentStep.value === 3 && !isFullNameValid.value) {
       showFullNameError.value = true;
       return;
     }
-    if (currentStep.value === 4 && !formData.localeName) {
+    if (currentStep.value === 4 && !isLocaleValid.value) {
       showLocaleError.value = true;
       return;
     }
 
     if (currentStep.value < 5) {
+      direction.value = 'forward';
       currentStep.value += 1;
-      await nextTick();
-      if (currentStep.value === 3 && fullNameInput.value) fullNameInput.value.focus();
-      if (currentStep.value === 4 && localeSelectInput.value) localeSelectInput.value.focus();
+    }
+  }
+
+  function prevStep() {
+    if (currentStep.value > 1) {
+      direction.value = 'back';
+      currentStep.value -= 1;
     }
   }
 
   function onFullNameEnter() {
-    if (isFullNameValid.value && currentStep.value === 3) nextStep();
-  }
-
-  function handleAgreementClick(event) {
-    const target = event.target;
-    if (target instanceof HTMLElement && (target.closest('input') || target.closest('label'))) return;
-    agreementChecked.value = !agreementChecked.value;
+    if (currentStep.value === 3) nextStep();
   }
 
   function generateLink() {
+    direction.value = 'forward';
     const title = formData.gender === 'Sister' ? 'Sis.' : 'Bro.';
-    const displayName = `[${formData.localeName}] ${title} ${capitalizeName(formData.fullName)}`;
+    const displayName = `[${effectiveLocale.value}] ${title} ${capitalizeName(formData.fullName)}`;
     generatedDisplayName.value = displayName;
-    generatedZoomLink.value = `https://us06web.zoom.us/j/${zoomConfig.meetingId}?uname=${encodeURIComponent(displayName)}&videooff=false&autoJoin=true&join=true `;
+    generatedZoomLink.value = `https://us06web.zoom.us/j/${zoomConfig.meetingId}?uname=${encodeURIComponent(displayName)}&videooff=false&autoJoin=true&join=true`;
     currentStep.value = 6;
   }
 
@@ -181,6 +196,14 @@ export function useZoomForm() {
       formData.gender = parsed.gender || '';
       formData.fullName = parsed.fullName || '';
       formData.localeName = parsed.localeName || '';
+      formData.customLocale = parsed.customLocale || '';
+
+      // Migrate a saved locale that no longer exists in the configured list
+      // (e.g. it was removed) into the "Other" slot instead of silently losing it.
+      if (formData.localeName && formData.localeName !== OTHER_LOCALE && !localeOptions.includes(formData.localeName)) {
+        formData.customLocale = formData.localeName;
+        formData.localeName = OTHER_LOCALE;
+      }
     } catch (error) {
       console.error('Error loading saved data:', error);
     }
@@ -210,25 +233,28 @@ export function useZoomForm() {
 
   return {
     agreementChecked,
+    canGoBack,
+    contact,
     copyLink,
     copyPageUrl,
     currentLocale,
     currentStep,
+    direction,
+    effectiveLocale,
     formData,
-    fullNameInput,
     generateLink,
     generatedDisplayName,
     generatedZoomLink,
-    handleAgreementClick,
     isFullNameValid,
-    noticeMessage,
     isInAppWarning,
+    isLocaleValid,
     localeOptions,
-    localeSelectInput,
+    noticeMessage,
     nextStep,
     onFullNameEnter,
+    OTHER_LOCALE,
     previewName,
-    progress,
+    prevStep,
     selectGender,
     showCopyNotificationBanner,
     showFullNameError,

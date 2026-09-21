@@ -3,19 +3,23 @@
   "langName": "Tagalog",
   "common": {
     "language": "Wika",
+    "back": "Bumalik",
+    "clear": "I-clear",
     "copyError": "Hindi makopya ang link. Mangyaring kopyahin ito nang manu-mano.",
     "pageTitle": "MCGI Zoom Meeting - Sumali sa Aming Serbisyo"
   },
   "notice": {
     "indicator": "PAALALA",
     "title": "Bago Ka Magsimula",
-    "message": "Kung sumasali ka sa Zoom meeting na ito nang walang password, malamang na hindi ka awtorisadong sumali. Mangyaring tumawag kay {name} sa {phone}."
+    "message": "Kung sumasali ka sa Zoom meeting na ito nang walang password, malamang na hindi ka awtorisadong sumali. Mangyaring tumawag kay {name} sa {phone}.",
+    "call": "Tawagan si {name}"
   },
   "inApp": {
+    "title": "Buksan sa Browser",
     "header": "Mangyaring buksan ang pahinang ito sa browser ng iyong phone",
-    "step1": "Step 1: I-tap ang button sa ibaba para kopyahin ang link ng pahinang ito.",
+    "step1": "I-tap ang button sa ibaba para kopyahin ang link ng pahinang ito.",
     "copyBtn": "Kopyahin ang link",
-    "step2": "Step 2: Buksan ang Chrome o Safari, pagkatapos i-paste ang kinopyang link sa address bar (kung saan mo itinatype ang address ng website).",
+    "step2": "Buksan ang Chrome o Safari, pagkatapos i-paste ang kinopyang link sa address bar (kung saan mo itinatype ang address ng website).",
     "hint": "Mag-long-press sa address bar at i-tap ang \"Paste\", o i-tap ang bar nang isang beses at i-paste.",
     "chrome": "Chrome",
     "safari": "Safari"
@@ -32,6 +36,8 @@
     "indicator": "Step 2 of 3",
     "title": "Ano ang iyong pangalan?",
     "subtitle": "Ito ay ipapakita sa Zoom meeting",
+    "fieldLabel": "Buong pangalan",
+    "fieldPlaceholder": "Juan Dela Cruz",
     "placeholder": "Ilagay ang iyong buong pangalan (e.g., Juan Dela Cruz)",
     "error": "Mangyaring maglagay ng hindi bababa sa 2 salita na may hindi bababa sa 3 letra bawat isa",
     "continue": "Magpatuloy"
@@ -40,6 +46,12 @@
     "indicator": "Step 3 of 3",
     "title": "Saang locale ka galing?",
     "subtitle": "Piliin ang iyong locale mula sa listahan",
+    "search": "Maghanap ng locale",
+    "listHeader": "Mga locale",
+    "noResults": "Walang tugmang locale. Piliin ang Iba pa sa ibaba.",
+    "other": "Iba pa",
+    "otherPlaceholder": "I-type ang iyong locale",
+    "otherError": "Mangyaring i-type ang iyong locale",
     "placeholder": "Piliin ang iyong locale...",
     "error": "Mangyaring piliin ang iyong locale",
     "namePreviewPrefix": "Ang iyong display name ay:",
@@ -65,9 +77,12 @@
     "title": "Handa na ang Iyong Zoom Link!",
     "subtitle": "I-tap ang button sa ibaba para sumali sa meeting",
     "resultLabel": "Ang Iyong Personal na Zoom Link",
-    "joinBtn": "Sumali sa Meeting",
+    "linkHeader": "Zoom link",
+    "joinBtn": "Buksan ang Zoom",
     "copyBtn": "Kopyahin ang Link",
-    "displayNameLabel": "Ang iyong display name:"
+    "displayNameRow": "Display name",
+    "displayNameLabel": "Ang iyong display name:",
+    "copyShort": "Kopyahin"
   },
   "copyNotification": "Nakopya ang link!"
 }

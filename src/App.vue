@@ -1,173 +1,204 @@
 <template>
-  <div class="flex w-full justify-center px-3 py-3 sm:px-5 sm:py-5">
-    <div class="relative flex h-full max-h-[calc(100vh-24px)] max-h-[calc(100dvh-24px)] w-full max-w-[600px] flex-col overflow-hidden rounded-2xl bg-white px-4 pb-4 pt-5 shadow-[0_10px_40px_rgba(0,0,0,0.25)] sm:h-auto sm:max-h-[90vh] sm:px-8 sm:pt-10">
-      <div v-if="!isInAppWarning" class="absolute left-0 top-0 h-1 bg-indigo-600 transition-all duration-300" :style="{ width: `${progress}%` }"></div>
-
-      <div class="absolute right-4 top-4 z-10 flex items-center gap-2 whitespace-nowrap">
-        <label for="langSelect" class="mb-0 inline-block text-[13px] font-semibold text-slate-500">{{ t('common.language') }}</label>
-        <select
-          id="langSelect"
-          v-model="currentLocale"
-          class="rounded-lg border-2 border-slate-200 bg-white px-2.5 py-1.5 text-[13px] font-semibold text-slate-700 outline-none transition-colors hover:border-indigo-600 focus:border-indigo-600"
-        >
-          <option value="ph">PH</option>
-          <option value="en">EN</option>
-        </select>
-      </div>
-
-      <InAppWarning
-        v-if="isInAppWarning"
-        :header="t('inApp.header')"
-        :step1="t('inApp.step1')"
-        :copy-label="t('inApp.copyBtn')"
-        :step2="t('inApp.step2')"
-        :hint="t('inApp.hint')"
-        :chrome-label="t('inApp.chrome')"
-        :safari-label="t('inApp.safari')"
-        @copy="copyPageUrl"
-      />
-
-      <template v-else>
-        <AppStep v-if="currentStep === 1" :indicator="t('notice.indicator')" :title="t('notice.title')" subtitle="">
-          <div class="rounded-[10px] bg-slate-50 p-4 sm:p-5 text-[13px] leading-[1.5] text-slate-800 sm:text-sm">
-            {{ noticeMessage }}
-          </div>
-          <template #actions><AppButton @click="nextStep">{{ t('step1.continue') }}</AppButton></template>
-        </AppStep>
-
-        <AppStep v-else-if="currentStep === 2" :indicator="t('step1.indicator')" :title="t('step1.title')" :subtitle="t('step1.subtitle')">
-          <div class="grid grid-cols-2 gap-2.5">
-            <button
-              type="button"
-              class="rounded-[10px] border-2 bg-white px-3 py-4 text-[15px] font-semibold transition-all duration-300 sm:px-4 sm:py-[18px] sm:text-base"
-              :class="formData.gender === 'Brother' ? 'border-indigo-600 bg-indigo-50 text-indigo-600' : 'border-slate-200 text-slate-800 hover:border-indigo-600 hover:bg-indigo-50/20'"
-              @click="selectGender('Brother')"
-            >
-              {{ t('step1.brother') }}
-            </button>
-            <button
-              type="button"
-              class="rounded-[10px] border-2 bg-white px-3 py-4 text-[15px] font-semibold transition-all duration-300 sm:px-4 sm:py-[18px] sm:text-base"
-              :class="formData.gender === 'Sister' ? 'border-indigo-600 bg-indigo-50 text-indigo-600' : 'border-slate-200 text-slate-800 hover:border-indigo-600 hover:bg-indigo-50/20'"
-              @click="selectGender('Sister')"
-            >
-              {{ t('step1.sister') }}
-            </button>
-          </div>
-          <template #actions><AppButton :disabled="!formData.gender" @click="nextStep">{{ t('step1.continue') }}</AppButton></template>
-        </AppStep>
-
-        <AppStep v-else-if="currentStep === 3" :indicator="t('step2.indicator')" :title="t('step2.title')" :subtitle="t('step2.subtitle')">
-          <div class="mb-3 sm:mb-5">
-            <input
-              ref="fullNameInput"
-              v-model="formData.fullName"
-              type="text"
-              :placeholder="t('step2.placeholder')"
-              class="w-full rounded-[10px] border-2 border-slate-200 bg-white px-4 py-3 text-base text-slate-800 outline-none transition-all duration-300 focus:border-indigo-600 focus:shadow-[0_0_0_3px_rgba(79,70,229,0.1)] sm:px-[18px] sm:py-3.5 sm:text-[17px]"
-              @input="showFullNameError = false"
-              @keypress.enter="onFullNameEnter"
-            >
-            <div v-if="showFullNameError" class="mt-1.5 text-xs text-rose-500">{{ t('step2.error') }}</div>
-          </div>
-          <template #actions><AppButton :disabled="!isFullNameValid" @click="nextStep">{{ t('step2.continue') }}</AppButton></template>
-        </AppStep>
-
-        <AppStep v-else-if="currentStep === 4" :indicator="t('step3.indicator')" :title="t('step3.title')" :subtitle="t('step3.subtitle')">
-          <div class="mb-3 sm:mb-5">
-            <select
-              ref="localeSelectInput"
-              v-model="formData.localeName"
-              class="w-full cursor-pointer rounded-[10px] border-2 border-slate-200 bg-white px-4 py-3 text-base text-slate-800 outline-none transition-all duration-300 focus:border-indigo-600 focus:shadow-[0_0_0_3px_rgba(79,70,229,0.1)] sm:px-[18px] sm:py-3.5 sm:text-[17px]"
-              @change="showLocaleError = false"
-            >
-              <option value="">{{ t('step3.placeholder') }}</option>
-              <option v-for="localeName in localeOptions" :key="localeName" :value="localeName">{{ localeName }}</option>
-            </select>
-            <div v-if="showLocaleError" class="mt-1.5 text-xs text-rose-500">{{ t('step3.error') }}</div>
-          </div>
-          <div v-if="formData.localeName" class="mt-3 rounded-md border-l-[3px] border-indigo-600 bg-indigo-50 px-3 py-3 text-xs text-slate-800 sm:mt-4 sm:px-3.5 sm:py-3.5 sm:text-[13px]">
-            <span>{{ t('step3.namePreviewPrefix') }}</span>
-            <strong class="ml-1 font-semibold text-indigo-600">{{ previewName }}</strong>
-          </div>
-          <template #actions><AppButton :disabled="!formData.localeName" @click="nextStep">{{ t('step3.continue') }}</AppButton></template>
-        </AppStep>
-
-        <AppStep v-else-if="currentStep === 5" :indicator="t('step4.indicator')" :title="t('step4.title')" :subtitle="t('step4.subtitle')">
-          <div class="rounded-[10px] bg-slate-50 p-4 sm:p-5">
-            <h2 class="mb-2.5 text-base font-bold text-slate-800 sm:mb-3 sm:text-lg">{{ t('step4.guidelinesHeading') }}</h2>
-            <ul class="space-y-2 sm:space-y-2.5">
-              <li v-for="(key, index) in guidelineKeys" :key="key" class="flex items-start text-[13px] leading-[1.4] text-slate-800 sm:text-sm">
-                <span class="mr-2.5 text-base font-bold leading-none text-emerald-500">✓</span>
-                <span>{{ t(`step4.guideline${index + 1}`) }}</span>
-              </li>
-            </ul>
-          </div>
-          <template #actions>
-            <div class="mb-3 flex cursor-pointer items-start rounded-[10px] border-2 border-slate-200 bg-white p-3.5 transition-all duration-300 hover:border-indigo-600 hover:bg-indigo-50/20 sm:p-4" @click="handleAgreementClick">
-              <input id="agreementCheckbox" v-model="agreementChecked" type="checkbox" class="mt-0.5 h-5 w-5 shrink-0 cursor-pointer">
-              <label for="agreementCheckbox" class="mb-0 ml-2.5 cursor-pointer text-[13px] font-medium leading-[1.4] text-slate-800 sm:text-sm">{{ t('step4.agreementLabel') }}</label>
-            </div>
-            <AppButton :disabled="!agreementChecked" @click="generateLink">{{ t('step4.generateBtn') }}</AppButton>
-          </template>
-        </AppStep>
-
-        <AppStep v-else-if="currentStep === 6" :indicator="t('step5.indicator')" :title="t('step5.title')" :subtitle="t('step5.subtitle')">
-          <div class="mb-4 rounded-[10px] bg-slate-50 p-4 sm:p-4">
-            <div class="mb-2 text-[11px] font-semibold uppercase tracking-[0.5px] text-slate-500">{{ t('step5.resultLabel') }}</div>
-            <div class="mb-3 max-h-20 overflow-y-auto break-all rounded-lg border-2 border-slate-200 bg-white p-3 font-mono text-[11px] text-indigo-600 sm:text-xs">{{ generatedZoomLink }}</div>
-            <div class="grid grid-cols-2 gap-2">
-              <a :class="joinButtonClass" :href="generatedZoomLink" target="_blank" rel="noopener noreferrer">{{ t('step5.joinBtn') }}</a>
-              <AppButton variant="secondary" @click="copyLink">{{ t('step5.copyBtn') }}</AppButton>
-            </div>
-          </div>
-          <div class="rounded-md border-l-[3px] border-indigo-600 bg-indigo-50 px-3 py-3 text-xs text-slate-800 sm:px-3.5 sm:py-3.5 sm:text-[13px]">
-            <strong class="font-semibold text-indigo-600">{{ t('step5.displayNameLabel') }}</strong><br>
-            <span>{{ generatedDisplayName }}</span>
-          </div>
-        </AppStep>
+  <div class="mx-auto min-h-dvh w-full max-w-[520px] pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)]">
+    <IosNavBar
+      :title="navTitle"
+      :show-back="form.canGoBack && !form.isInAppWarning"
+      :back-label="form.t('common.back')"
+      @back="goBack"
+    >
+      <template #trailing>
+        <div class="relative flex min-h-11 min-w-11 items-center justify-center gap-1 text-ios-tint">
+          <Globe class="size-5" aria-hidden="true" />
+          <span class="text-ios-subhead font-semibold">{{ form.currentLocale.toUpperCase() }}</span>
+          <select
+            v-model="form.currentLocale"
+            class="absolute inset-0 h-full w-full cursor-pointer opacity-0"
+            :aria-label="form.t('common.language')"
+          >
+            <option value="ph">Tagalog</option>
+            <option value="en">English</option>
+          </select>
+        </div>
       </template>
-    </div>
+    </IosNavBar>
 
-    <div class="pointer-events-none fixed right-4 top-4 z-[1000] rounded-[10px] bg-emerald-500 px-5 py-3 text-sm font-semibold text-white shadow-[0_8px_24px_rgba(0,0,0,0.2)] transition-all duration-300" :class="showCopyNotificationBanner ? 'translate-y-0 opacity-100' : '-translate-y-5 opacity-0'">
-      {{ t('copyNotification') }}
-    </div>
+    <main class="grid overflow-x-clip">
+      <Transition :name="form.direction === 'back' ? 'ios-pop' : 'ios-push'">
+        <component :is="currentScreen" :key="screenKey" class="bg-ios-bg" />
+      </Transition>
+    </main>
+
+    <IosHud :show="form.showCopyNotificationBanner" :text="form.t('copyNotification')" />
   </div>
 </template>
 
 <script setup>
-import AppButton from './components/AppButton.vue';
-import AppStep from './components/AppStep.vue';
-import InAppWarning from './components/InAppWarning.vue';
-import { guidelineKeys, useZoomForm } from './composables/useZoomForm';
+import { computed, onBeforeUnmount, onMounted, provide, reactive, watch } from 'vue';
+import { Globe } from 'lucide-vue-next';
+import IosHud from './components/ios/IosHud.vue';
+import IosNavBar from './components/ios/IosNavBar.vue';
+import GenderScreen from './screens/GenderScreen.vue';
+import GuidelinesScreen from './screens/GuidelinesScreen.vue';
+import InAppScreen from './screens/InAppScreen.vue';
+import LocaleScreen from './screens/LocaleScreen.vue';
+import NameScreen from './screens/NameScreen.vue';
+import NoticeScreen from './screens/NoticeScreen.vue';
+import ResultScreen from './screens/ResultScreen.vue';
+import { useZoomForm } from './composables/useZoomForm';
 
-const joinButtonClass = 'inline-flex min-h-11 w-full items-center justify-center rounded-[10px] bg-indigo-600 px-4 py-3 text-[15px] font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-indigo-700 hover:shadow-[0_6px_16px_rgba(79,70,229,0.3)] sm:text-base';
+const form = reactive(useZoomForm());
+provide('zoomForm', form);
 
-const {
-  agreementChecked,
-  copyLink,
-  copyPageUrl,
-  currentLocale,
-  currentStep,
-  formData,
-  fullNameInput,
-  generateLink,
-  generatedDisplayName,
-  generatedZoomLink,
-  handleAgreementClick,
-  isFullNameValid,
-  isInAppWarning,
-  noticeMessage,
-  localeOptions,
-  localeSelectInput,
-  nextStep,
-  onFullNameEnter,
-  previewName,
-  progress,
-  selectGender,
-  showCopyNotificationBanner,
-  showFullNameError,
-  showLocaleError,
-  t
-} = useZoomForm();
+const stepScreens = {
+  1: NoticeScreen,
+  2: GenderScreen,
+  3: NameScreen,
+  4: LocaleScreen,
+  5: GuidelinesScreen,
+  6: ResultScreen
+};
+
+const stepTitleKeys = {
+  1: 'notice.title',
+  2: 'step1.title',
+  3: 'step2.title',
+  4: 'step3.title',
+  5: 'step4.title',
+  6: 'step5.title'
+};
+
+const currentScreen = computed(() => (form.isInAppWarning ? InAppScreen : stepScreens[form.currentStep]));
+const screenKey = computed(() => (form.isInAppWarning ? 'inApp' : form.currentStep));
+const navTitle = computed(() => form.t(form.isInAppWarning ? 'inApp.title' : stepTitleKeys[form.currentStep]));
+
+// The Back button only asks the browser to go back; the popstate handler below is the
+// single place that actually mutates step/direction, so the history stack and the UI
+// can never drift apart from each other.
+function goBack() {
+  history.back();
+}
+
+function handlePopState(event) {
+  const targetStep = event.state?.step;
+  if (typeof targetStep === 'number' && targetStep < form.currentStep) {
+    form.direction = 'back';
+    form.currentStep = targetStep;
+  } else {
+    history.replaceState({ step: form.currentStep }, '');
+  }
+}
+
+watch(() => form.currentStep, (value, oldValue) => {
+  window.scrollTo(0, 0);
+  if (value > oldValue) {
+    history.pushState({ step: value }, '');
+  }
+});
+
+onMounted(() => {
+  history.replaceState({ step: 1 }, '');
+  window.addEventListener('popstate', handlePopState);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener('popstate', handlePopState);
+});
 </script>
+
+<style>
+main.grid > * {
+  grid-area: 1 / 1;
+}
+
+.ios-push-enter-active,
+.ios-push-leave-active,
+.ios-pop-enter-active,
+.ios-pop-leave-active {
+  transition: transform 350ms cubic-bezier(0.32, 0.72, 0, 1), opacity 350ms, filter 350ms;
+}
+
+/* push (forward): the new screen slides in from the right, on top of the old one */
+.ios-push-enter-active {
+  z-index: 1;
+  box-shadow: -8px 0 24px rgba(0, 0, 0, 0.2);
+}
+.ios-push-enter-from {
+  transform: translateX(100%);
+}
+.ios-push-enter-to {
+  transform: translateX(0);
+}
+
+.ios-push-leave-active {
+  z-index: 0;
+}
+.ios-push-leave-from {
+  transform: translateX(0);
+  opacity: 1;
+  filter: brightness(1);
+}
+.ios-push-leave-to {
+  transform: translateX(-30%);
+  opacity: 0.75;
+  filter: brightness(0.85);
+}
+
+/* pop (back): the reverse — the old (current) screen slides out to the right, on top */
+.ios-pop-leave-active {
+  z-index: 1;
+  box-shadow: -8px 0 24px rgba(0, 0, 0, 0.2);
+}
+.ios-pop-leave-from {
+  transform: translateX(0);
+}
+.ios-pop-leave-to {
+  transform: translateX(100%);
+}
+
+.ios-pop-enter-active {
+  z-index: 0;
+}
+.ios-pop-enter-from {
+  transform: translateX(-30%);
+  opacity: 0.75;
+  filter: brightness(0.85);
+}
+.ios-pop-enter-to {
+  transform: translateX(0);
+  opacity: 1;
+  filter: brightness(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ios-push-enter-active,
+  .ios-push-leave-active,
+  .ios-pop-enter-active,
+  .ios-pop-leave-active {
+    transition: opacity 150ms linear;
+    transform: none;
+    filter: none;
+    box-shadow: none;
+    z-index: 0;
+  }
+  .ios-push-enter-from,
+  .ios-pop-enter-from {
+    opacity: 0;
+    transform: none;
+    filter: none;
+  }
+  .ios-push-enter-to,
+  .ios-pop-enter-to,
+  .ios-push-leave-from,
+  .ios-pop-leave-from {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+  .ios-push-leave-to,
+  .ios-pop-leave-to {
+    opacity: 0;
+    transform: none;
+    filter: none;
+  }
+}
+</style>

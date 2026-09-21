@@ -14,8 +14,8 @@ export default defineConfig({
         name: 'MCGI Zoom Meeting',
         short_name: 'MCGI Zoom',
         description: 'Get your personalized Zoom link with a properly formatted display name.',
-        theme_color: '#667eea',
-        background_color: '#667eea',
+        theme_color: '#f2f2f7',
+        background_color: '#f2f2f7',
         icons: [
           { src: 'pwa-64x64.png', sizes: '64x64', type: 'image/png' },
           { src: 'pwa-192x192.png', sizes: '192x192', type: 'image/png' },
