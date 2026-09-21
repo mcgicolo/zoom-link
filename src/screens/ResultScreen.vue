@@ -50,6 +50,20 @@
         {{ form.t('step5.joinBtn') }}
       </IosButton>
     </div>
+
+    <IosSection v-if="installGuide.isAvailable">
+      <IosRow
+        as="button"
+        accessory="chevron"
+        :title="form.t('install.title')"
+        :subtitle="form.t('install.cardSubtitle')"
+        @click="installGuide.open()"
+      >
+        <template #leading>
+          <img :src="'./pwa-192x192.png'" alt="" class="size-[29px] rounded-[7px]">
+        </template>
+      </IosRow>
+    </IosSection>
   </IosScreen>
 </template>
 
@@ -61,8 +75,10 @@ import IosSection from '../components/ios/IosSection.vue';
 import IosRow from '../components/ios/IosRow.vue';
 import IosButton from '../components/ios/IosButton.vue';
 import IosIconBadge from '../components/ios/IosIconBadge.vue';
+import { useInstallGuide } from '../composables/useInstallGuide';
 
 const form = inject('zoomForm');
+const installGuide = useInstallGuide();
 
 // Select the whole link on tap so it can also be copied by hand (setSelectionRange works on iOS).
 function selectLink(event) {

@@ -84,5 +84,22 @@
     "displayNameLabel": "Ang iyong display name:",
     "copyShort": "Kopyahin"
   },
-  "copyNotification": "Nakopya ang link!"
+  "copyNotification": "Nakopya ang link!",
+  "install": {
+    "title": "Idagdag sa Home Screen",
+    "subtitle": "Buksan ang MCGI Zoom sa isang tap sa susunod, nang hindi hinahanap ang link.",
+    "cardSubtitle": "Buksan ang app na ito sa isang tap sa susunod",
+    "iosStep1": "I-tap ang Share button",
+    "iosStep1Hint": "Sa mas bagong iPhone, i-tap muna ang •••, saka ang Share.",
+    "iosStep2": "I-tap ang “Add to Home Screen”",
+    "iosStep3": "I-tap ang “Add”",
+    "androidStep1": "I-tap ang ⋮ menu",
+    "androidStep2": "I-tap ang “Add to Home screen” o “Install app”",
+    "androidStep3": "I-tap ang “Install”",
+    "finalStep": "Buksan ang MCGI Zoom mula sa iyong Home Screen",
+    "installBtn": "I-install ang App",
+    "doneBtn": "Naidagdag Ko Na",
+    "notNow": "Hindi Muna",
+    "close": "Isara"
+  }
 }

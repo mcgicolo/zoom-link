@@ -29,6 +29,7 @@
     </main>
 
     <IosHud :show="form.showCopyNotificationBanner" :text="form.t('copyNotification')" />
+    <InstallGuide />
   </div>
 </template>
 
@@ -37,6 +38,7 @@ import { computed, onBeforeUnmount, onMounted, provide, reactive, watch } from '
 import { Globe } from 'lucide-vue-next';
 import IosHud from './components/ios/IosHud.vue';
 import IosNavBar from './components/ios/IosNavBar.vue';
+import InstallGuide from './components/InstallGuide.vue';
 import GenderScreen from './screens/GenderScreen.vue';
 import GuidelinesScreen from './screens/GuidelinesScreen.vue';
 import InAppScreen from './screens/InAppScreen.vue';
@@ -45,9 +47,13 @@ import NameScreen from './screens/NameScreen.vue';
 import NoticeScreen from './screens/NoticeScreen.vue';
 import ResultScreen from './screens/ResultScreen.vue';
 import { useZoomForm } from './composables/useZoomForm';
+import { useInstallGuide } from './composables/useInstallGuide';
 
 const form = reactive(useZoomForm());
 provide('zoomForm', form);
+
+const installGuide = useInstallGuide();
+let installGuideTimer = null;
 
 const stepScreens = {
   1: NoticeScreen,
@@ -98,10 +104,17 @@ watch(() => form.currentStep, (value, oldValue) => {
 onMounted(() => {
   history.replaceState({ step: 1 }, '');
   window.addEventListener('popstate', handlePopState);
+
+  // Offer the Home Screen guide shortly after the app opens, unless it's already installed,
+  // snoozed, or we're inside an in-app browser (which can't add to the Home Screen).
+  installGuideTimer = setTimeout(() => {
+    if (installGuide.shouldAutoOpen && !form.isInAppWarning) installGuide.open();
+  }, 1500);
 });
 
 onBeforeUnmount(() => {
   window.removeEventListener('popstate', handlePopState);
+  clearTimeout(installGuideTimer);
 });
 </script>
 
