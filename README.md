@@ -1,6 +1,6 @@
 # MCGI Zoom Meeting Generator
 
-A mobile-first Vue app that generates personalized Zoom meeting links with properly formatted display names.
+A mobile-first Vue app that generates personalized Zoom meeting links with properly formatted display names. It's hosted on GitHub Pages and can be installed as an app (PWA).
 
 ## Features
 
@@ -9,72 +9,7 @@ A mobile-first Vue app that generates personalized Zoom meeting links with prope
 - English and Tagalog locale support
 - LocalStorage form persistence
 - One-click copy and join functionality
-
-## One-Command Installer
-
-Use the installer to generate and publish a ready-to-use Zoom page repository.
-
-Installer script: [https://github.com/mcgicolo/zoom-link](https://github.com/mcgicolo/zoom-link)
-
-### macOS / Linux
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/mcgicolo/zoom-link/main/install.sh | bash
-```
-
-### Windows (PowerShell)
-
-```powershell
-irm https://raw.githubusercontent.com/mcgicolo/zoom-link/main/install.ps1 | iex
-```
-
-### Windows (Git Bash)
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/mcgicolo/zoom-link/main/install.sh | bash
-```
-
-The installer will ask for:
-
-- GitHub repo URL (example: `https://github.com/OWNER/REPO`)
-- GitHub email
-- GitHub pass/token
-- Worker's name
-- Worker's phone
-- Zoom ID
-- Zoom pass
-- Allowed locales (press Enter to use defaults)
-
-It then:
-
-- downloads `docs/` into a local folder named after the repo
-- creates `config.json` from your answers
-- pushes to your target GitHub repo
-- enables GitHub Pages and prints the URL
-
-### How the installer works
-
-```mermaid
-flowchart TD
-    Start([Run install.sh]) --> Deps{"git and gh installed?"}
-    Deps -->|No| Install[Install via brew, apt, or winget]
-    Install --> Prompts
-    Deps -->|Yes| Prompts[Interactive prompts]
-    Prompts --> Input[Collect repo URL, email, token, worker, Zoom, locales]
-    Input --> Parse[Parse URL to owner/repo. Target dir = ./repo]
-    Parse --> Exists{"Target dir empty or new?"}
-    Exists -->|No| Abort([Abort: directory exists])
-    Exists -->|Yes| Auth[Configure GitHub CLI auth]
-    Auth --> Download[Download docs from template repo into target dir]
-    Download --> Config[Write config.json from answers]
-    Config --> Git[Git init, user config, add, commit]
-    Git --> Push{"Remote origin set?"}
-    Push -->|No| Create[gh repo create and push]
-    Push -->|Yes| PushOnly[git push -f origin main]
-    Create --> Pages
-    PushOnly --> Pages[Enable GitHub Pages on main branch]
-    Pages --> Done([Print Pages URL. Visit after 1-3 minutes])
-```
+- Installable as an app (PWA); after the first visit the app itself opens offline, but joining a meeting still needs internet
 
 ## Development
 
@@ -89,12 +24,23 @@ npm run dev
 npm run build
 ```
 
-Build output is generated in `docs/`.
+Build output goes to `docs/` and now also includes the web app manifest (`manifest.webmanifest`), the service worker (`sw.js`) and the app icons.
 
 ## Configuration
 
-To use this with your own Zoom meeting, update the `ZOOM_CONFIG` object in `src/App.vue`.
+- The meeting ID, contact name/phone, and locale list live in `config.json`, which `src/main.js` loads at runtime.
+- `config.json` is gitignored. `npm run dev` and `npm run build` create it from `config.json.sample` if it's missing (`scripts/ensure-config.js`).
+- The dev server serves a copy at `public/config.json` (also gitignored); the build copies it to `docs/config.json`, which is the copy the live site uses.
+- The service worker always fetches `config.json` from the network and uses its saved copy only when offline, so changes show up the next time the app opens.
 
-## GitHub Pages Deployment
+## App icons
 
-You can deploy the generated `dist/` files to GitHub Pages (for example using `gh-pages` branch or `docs/` folder flow).
+Icons are generated from `public/favicon.svg` (currently a placeholder) using `npm run generate-pwa-assets` (settings in `pwa-assets.config.js`).
+
+To change the icon, replace `public/favicon.svg`, or point `pwa-assets.config.js` at a square PNG logo at least 512×512. Then run that script and rebuild.
+
+## Deployment
+
+GitHub Pages serves `docs/` from the `main` branch at [https://mcgicolo.github.io/zoom-link/](https://mcgicolo.github.io/zoom-link/).
+
+To deploy, run `npm run build`, then commit and push `docs/`.
