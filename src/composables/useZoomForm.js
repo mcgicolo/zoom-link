@@ -58,6 +58,15 @@ function tidy(value) {
     .join(' ');
 }
 
+// In-app browsers of Messenger/Facebook (FBAN on iOS, FB_IAB on Android; FBAV in both),
+// Instagram and other social apps. Add ?inApp=true to the URL to preview the warning.
+const IN_APP_BROWSER_PATTERN = /FBAN|FBAV|FB_IAB|Messenger|Instagram|Line\/|Twitter|Snapchat|TikTok|LinkedInApp/i;
+
+function isInAppBrowser() {
+  const forceInApp = new URLSearchParams(window.location.search).get('inApp')?.toLowerCase() === 'true';
+  return forceInApp || IN_APP_BROWSER_PATTERN.test(navigator.userAgent || '');
+}
+
 export function useZoomForm() {
   const appConfig = inject('appConfig', { zoom: {}, contact: {}, localeList: [] });
   const zoomConfig = appConfig.zoom ?? {};
@@ -67,7 +76,8 @@ export function useZoomForm() {
   const currentStep = ref(1);
   const direction = ref('forward');
   const currentLocale = ref(localStorage.getItem(LOCALE_STORAGE_KEY) || 'ph');
-  const isInAppWarning = ref(false);
+  // Detected before the first render, so in-app browsers never see the notice screen flash first.
+  const isInAppWarning = ref(isInAppBrowser());
   const agreementChecked = ref(false);
   const showFullNameError = ref(false);
   const showLocaleError = ref(false);
@@ -178,15 +188,6 @@ export function useZoomForm() {
     copyText(window.location.href);
   }
 
-  function checkInAppBrowser() {
-    const params = new URLSearchParams(window.location.search);
-    const forceInApp = params.get('inApp')?.toLowerCase() === 'true';
-    const ua = navigator.userAgent || '';
-    const isInAppBrowser = /FBAN|FBAV|Messenger|Instagram|Line\//i.test(ua)
-      || /Twitter|Snapchat|TikTok|LinkedInApp/i.test(ua);
-    isInAppWarning.value = Boolean(forceInApp || isInAppBrowser);
-  }
-
   function loadFromLocalStorage() {
     const saved = localStorage.getItem(FORM_STORAGE_KEY);
     if (!saved) return;
@@ -227,7 +228,6 @@ export function useZoomForm() {
   onMounted(() => {
     if (!LOCALE_DATA[currentLocale.value]) currentLocale.value = 'en';
     loadFromLocalStorage();
-    checkInAppBrowser();
     applyDocumentLocale();
   });
 
